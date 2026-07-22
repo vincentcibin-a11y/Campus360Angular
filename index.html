@@ -12,22 +12,47 @@
 </head>
 
 <body ng-controller="dashboardcontroller">
-    <input type="text" name="" id="" ng-model="collegename">
 
     <h1>{{collegename}}</h1>
-    <input type="number" name="" id="" ng-model="totalstudent">
 
-    <p>Total Students:{{totalstudent}}</p>
-    <input type="number" name="" id="" ng-model="totalFaculty">
+    <input type="text" ng-model="collegename">
 
-    <p>Total Faculty:{{totalFaculty}}</p>
-    <button class="btn btn-primary" ng-click="totalstudent = totalstudent + 1">
-        Submit
+    <br><br>
+
+    <input type="number" ng-model="totalstudent">
+    <p>Total Students : {{totalstudent}}</p>
+
+    <input type="number" ng-model="totalFaculty">
+    <p>Total Faculty : {{totalFaculty}}</p>
+
+    <button ng-click="totalstudent = totalstudent + 1">
+        Increase Student Count
     </button>
-    <button ng-click="addstudent()">Add Student</button>
-    <h2 class="">Student List</h2>
-    <ul>
-        <li class="ol" ng-repeat="student in students">{{student}}</li>
+
+    <hr>
+
+    <h2>Add Student</h2>
+
+    <input type="text"
+           placeholder="Enter student name"
+           ng-model="newStudent">
+
+    <button ng-click="addstudent()">
+        Add Student
+    </button>
+
+    <hr>
+
+    <h2>Student List</h2>
+
+    <button ng-click="showstudents = !showstudents">
+        {{showstudents ? 'Hide Students' : 'Show Students'}}
+    </button>
+
+    <ul ng-show="showstudents">
+        <li ng-repeat="student in students">
+            {{student}}
+        </li>
     </ul>
 
 </body>

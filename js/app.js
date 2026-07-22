@@ -1,17 +1,31 @@
 var app = angular.module("campus360", []);
 
 app.controller("dashboardcontroller", function ($scope) {
+
     $scope.collegename = "Campus360";
     $scope.totalstudent = 1200;
     $scope.totalFaculty = 85;
-
-    console.log("Dashboard controller is loaded");
+    $scope.showstudents = true;
 
     $scope.students = [
-        "Cibin", "John", "Visakh", "Alena"
+        "Cibin",
+        "John",
+        "Visakh",
+        "Alena"
     ];
 
     $scope.addstudent = function () {
-        $scope.totalstudent++;
+
+        if ($scope.newStudent && $scope.newStudent.trim() !== "") {
+
+            $scope.students.push($scope.newStudent);
+
+            $scope.totalstudent++;
+
+            $scope.newStudent = "";
+
+        }
+
     };
+
 });
