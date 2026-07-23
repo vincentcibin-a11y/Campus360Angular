@@ -36,11 +36,9 @@ app.controller("dashboardcontroller", function ($scope) {
     $scope.student = {};
     $scope.registeredStudents = [];
 
-    // Controls
     $scope.isDisabled = false;
     $scope.isReadOnly = false;
 
-    // Add Student
     $scope.addStudent = function () {
 
         if ($scope.newStudent && $scope.newStudent.trim() !== "") {
@@ -57,16 +55,16 @@ app.controller("dashboardcontroller", function ($scope) {
     // Register Student
     $scope.registerStudent = function () {
 
-        if ($scope.student.name &&
-            $scope.student.email &&
-            $scope.student.rollNo) {
+        if ($scope.studentForm.$valid) {
 
             $scope.registeredStudents.push({
-
                 name: $scope.student.name,
                 email: $scope.student.email,
-                rollNo: $scope.student.rollNo
-
+                phone: $scope.student.phone,
+                gender: $scope.student.gender,
+                department: $scope.student.department,
+                rollNo: $scope.student.rollNo,
+                age: $scope.student.age
             });
 
             alert("Student Registered Successfully!");

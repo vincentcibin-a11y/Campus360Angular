@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus360</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="./node_modules/angular/angular.min.js"></script>
+    <script>
+        if (!window.angular) {
+            document.write('<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"><\/script>');
+        }
+    </script>
     <script src="js/app.js"></script>
 
     <style>
@@ -221,11 +226,14 @@
         <input type="text"
                name="name"
                ng-model="student.name"
+               ng-minlength="3"
+               ng-maxlength="29"
                required>
 
         <span class="error"
               ng-show="studentForm.name.$touched && studentForm.name.$invalid">
-            Name is required
+            <span ng-show="studentForm.name.$error.required">Name is required.</span>
+            <span ng-show="studentForm.name.$error.minlength || studentForm.name.$error.maxlength">Name must be 3-29 characters.</span>
         </span>
 
         <br><br>
@@ -239,9 +247,59 @@
 
         <span class="error"
               ng-show="studentForm.email.$touched && studentForm.email.$invalid">
-            Valid Email Required
+            <span ng-show="studentForm.email.$error.required">Email is required.</span>
+            <span ng-show="studentForm.email.$error.email">Enter a valid email.</span>
         </span>
 
+        <br><br>
+
+        <label>Phone Number</label><br>
+
+        <input type="tel"
+               name="phone"
+               ng-model="student.phone"
+               ng-pattern="/^[0-9]{10}$/"
+               required>
+
+        <span class="error"
+              ng-show="studentForm.phone.$touched && studentForm.phone.$invalid">
+            <span ng-show="studentForm.phone.$error.required">Phone number is required.</span>
+            <span ng-show="studentForm.phone.$error.pattern">Enter a valid 10-digit phone number.</span>
+        </span>
+        <br><br>
+
+        <label>Gender</label><br>
+
+        <label><input type="radio"
+              name="gender"
+              ng-model="student.gender"
+              value="male"
+              required> Male</label><br>
+
+        <label><input type="radio"
+              name="gender"
+              ng-model="student.gender"
+              value="female"> Female</label><br>
+
+        <span class="error"
+              ng-show="studentForm.gender.$touched && studentForm.gender.$invalid">
+            Gender is required.
+        </span>
+        <br><br>
+
+        <label>Department</label><br>
+
+        <select name="department"
+                ng-model="student.department"
+                required>
+            <option value="">Select Department</option>
+            <option ng-repeat="dept in departments" value="{{dept}}">{{dept}}</option>
+        </select>
+
+        <span class="error"
+              ng-show="studentForm.department.$touched && studentForm.department.$invalid">
+            Department selection is required.
+        </span>
         <br><br>
 
         <label>Roll Number</label><br>
@@ -253,9 +311,24 @@
 
         <span class="error"
               ng-show="studentForm.roll.$touched && studentForm.roll.$invalid">
-            Roll Number Required
+            Roll Number is required.
         </span>
+        <br><br>
 
+        <label>Age</label><br>
+
+        <input type="number"
+               name="age"
+               ng-model="student.age"
+               min="16"
+               max="99"
+               required>
+
+        <span class="error"
+              ng-show="studentForm.age.$touched && studentForm.age.$invalid">
+            <span ng-show="studentForm.age.$error.required">Age is required.</span>
+            <span ng-show="studentForm.age.$error.min || studentForm.age.$error.max">Age must be between 16 and 99.</span>
+        </span>
         <br><br>
 
         <button type="button"
@@ -288,15 +361,13 @@
     <p>
         pristine: {{studentForm.$pristine}}
     </p>
-<p>
-    dirty:{{studentForm.$dirty}}
-</p>
-<p ng-show="studentForm.studentForm.$touched && studentForm.studentForm.$invalid"
-    style="color:red">
-    
-    Student Name is Required
-
-</p>
+    <p>
+        dirty: {{studentForm.$dirty}}
+    </p>
+    <p ng-show="studentForm.$touched && studentForm.$invalid"
+       style="color:red">
+        Please correct the highlighted registration fields above.
+    </p>
 </body>
 
 </html>
