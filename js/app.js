@@ -25,7 +25,24 @@ app.controller("dashboardcontroller", function ($scope) {
             $scope.totalStudents++;
             $scope.newStudent = "";
             $scope.showStudents = true;
+            $scope.allowAdmission=function()
+            {
+                $scope.isDisabled=false;
+            };
+
+            $scope.addStudent=function()
+            {
+                 $scope.totalStudents++;
+            }
+            $scope.isReadOnly=true;
+            $scope.toggleReadOnly=function()
+            {
+
+            }
         }
+        <button ng-click="isReadOnly"=!isReadOnly">
+        toggleReadOnly</button>
+        
     };
 
 });
