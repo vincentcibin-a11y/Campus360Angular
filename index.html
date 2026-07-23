@@ -103,7 +103,7 @@
                name="newStudent"
                placeholder="Enter Student Name"
                ng-model="newStudent"
-               required>
+               required ng-submit="registerStudent()">
 
         <button type="button"
                 ng-click="addStudent()"
@@ -331,7 +331,7 @@
         </span>
         <br><br>
 
-        <button type="button"
+        <button type="submit"
                 ng-click="registerStudent()"
                 ng-disabled="studentForm.$invalid">
             Register Student

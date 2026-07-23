@@ -2,17 +2,16 @@ const app = angular.module("campus360", []);
 
 app.controller("dashboardcontroller", function ($scope) {
 
-    // College Details
+
     $scope.collegeName = "Campus360";
     $scope.totalStudents = 1200;
     $scope.totalFaculty = 85;
     $scope.showStudents = true;
 
-    // Filters
+
     $scope.fees = 25600;
     $scope.today = new Date();
 
-    // Departments
     $scope.departments = [
         "CSE",
         "MBA",
@@ -24,7 +23,6 @@ app.controller("dashboardcontroller", function ($scope) {
 
     $scope.selectedDepartment = "CSE";
 
-    // Student List
     $scope.students = [
         "Cibin",
         "John",
@@ -52,7 +50,6 @@ app.controller("dashboardcontroller", function ($scope) {
 
     };
 
-    // Register Student
     $scope.registerStudent = function () {
 
         if ($scope.studentForm.$valid) {
@@ -70,6 +67,9 @@ app.controller("dashboardcontroller", function ($scope) {
             alert("Student Registered Successfully!");
 
             $scope.student = {};
+            $scope.registerStudent=function(){
+                alert("Student Registered Successfully!");
+            }
 
             $scope.studentForm.$setPristine();
             $scope.studentForm.$setUntouched();
