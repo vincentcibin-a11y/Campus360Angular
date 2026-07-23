@@ -1,40 +1,91 @@
 <!DOCTYPE html>
-<html ng-app="campus360">
+<html lang="en" ng-app="campus360">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus360</title>
 
-    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <script src="js/app.js"></script>
 
-    <title>Campus360</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        .green {
+            color: green;
+            font-weight: bold;
+        }
+
+        .red {
+            color: red;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        button {
+            padding: 8px;
+            margin: 5px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 10px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 
 <body ng-controller="dashboardcontroller">
 
     <h1>{{collegeName}}</h1>
 
-    <input type="text" ng-model="collegeName">
+    <input type="text"
+           ng-model="collegeName"
+           ng-readonly="isReadOnly">
 
-    <br><br>
+    <button ng-click="toggleReadOnly()">
+        Toggle Read Only
+    </button>
+
+    <hr>
 
     <input type="number" ng-model="totalStudents">
-    <p ng-class="{ 'green': totalStudents > 1000, 'red': totalStudents < 1000 }">
+
+    <p ng-class="{'green':totalStudents>=1000,'red':totalStudents<1000}">
         Total Students : {{totalStudents}}
     </p>
 
     <input type="number" ng-model="totalFaculty">
 
     <p ng-style="{
-        'color': totalFaculty >= 100 ? 'green' : 'red',
-        'font-size':'25px',
-        'font-weight':'bold'}">
+        'color':totalFaculty>=100?'green':'red',
+        'font-size':'22px',
+        'font-weight':'bold'
+    }">
         Total Faculty : {{totalFaculty}}
     </p>
 
-    <button ng-click="totalStudents = totalStudents + 1">
+    <button ng-click="totalStudents=totalStudents+1">
         Increase Student Count
     </button>
 
@@ -42,17 +93,30 @@
 
     <h2>Add Student</h2>
 
-    <input type="text" placeholder="Enter student name" ng-model="newStudent">
+    <form name="addStudentForm" novalidate>
+        <input type="text"
+               name="newStudent"
+               placeholder="Enter Student Name"
+               ng-model="newStudent"
+               required>
 
-    <button ng-click="addStudent()">
-        Add Student
-    </button>
+        <button type="button"
+                ng-click="addStudent()"
+                ng-disabled="addStudentForm.$invalid">
+            Add Student
+        </button>
+
+        <span class="error"
+              ng-show="addStudentForm.newStudent.$touched && addStudentForm.newStudent.$invalid">
+            Student name is required.
+        </span>
+    </form>
 
     <hr>
 
     <h2>Student List</h2>
 
-    <button ng-click="showStudents = !showStudents">
+    <button ng-click="showStudents=!showStudents">
         {{showStudents ? 'Hide Students' : 'Show Students'}}
     </button>
 
@@ -61,76 +125,178 @@
             {{student}}
         </li>
     </ul>
-    <p class="">uppercase : {{collegeName | uppercase}}</p>
-    <p class="">lowercase : {{collegeName | lowercase}}</p>
-    <p>currency: {{fees}}</p>
-    <p>date: {{today | date:"dd/MM/yyyy"}}</p>
-    <p class="">number: {{fees | number:2}}</p>
-    <p class="">Selected Department: {{selectedDepartment}}</p>
-   <hr>
-        <h2>Selected Departments</h2>
 
-        <label>Select Department</label>
+    <hr>
+
+    <h2>Angular Filters</h2>
+
+    <p>Uppercase : {{collegeName | uppercase}}</p>
+
+    <p>Lowercase : {{collegeName | lowercase}}</p>
+
+    <p>Currency : {{fees | currency:'₹'}}</p>
+
+    <p>Date : {{today | date:'dd/MM/yyyy'}}</p>
+
+    <p>Number : {{fees | number:2}}</p>
+
+    <hr>
+
+    <h2>Select Department</h2>
+
+    <select ng-model="selectedDepartment"
+            ng-options="department for department in departments">
+    </select>
+
+    <p>Selected Department : {{selectedDepartment}}</p>
+
+    <hr>
+
+    <h2>Department Information</h2>
+
+    <div ng-switch="selectedDepartment">
+
+        <div ng-switch-when="CSE">
+            <h3>CSE</h3>
+            <p>Computer Science Engineering</p>
+        </div>
+
+        <div ng-switch-when="MBA">
+            <h3>MBA</h3>
+            <p>Business Administration</p>
+        </div>
+
+        <div ng-switch-when="MCA">
+            <h3>MCA</h3>
+            <p>Master of Computer Applications</p>
+        </div>
+
+        <div ng-switch-when="EEE">
+            <h3>EEE</h3>
+            <p>Electrical and Electronics Engineering</p>
+        </div>
+
+        <div ng-switch-when="BCA">
+            <h3>BCA</h3>
+            <p>Bachelor of Computer Applications</p>
+        </div>
+
+        <div ng-switch-when="IMCA">
+            <h3>IMCA</h3>
+            <p>Integrated MCA</p>
+        </div>
+
+        <div ng-switch-default>
+            <h3>Please Select a Department</h3>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <h2>ng-init Demo</h2>
+
+    <div ng-init="collegeCode='FISAT123'; location='Angamaly'">
+
+        <p>College Code : {{collegeCode}}</p>
+
+        <p>Location : {{location}}</p>
+
+    </div>
+
+    <hr>
+
+    <button ng-click="allowAdmission()">
+        Allow Admission
+    </button>
+
+    <hr>
+
+    <h2>Student Registration</h2>
+
+    <form name="studentForm" novalidate>
+
+        <label>Name</label><br>
+
+        <input type="text"
+               name="name"
+               ng-model="student.name"
+               required>
+
+        <span class="error"
+              ng-show="studentForm.name.$touched && studentForm.name.$invalid">
+            Name is required
+        </span>
 
         <br><br>
 
-        <select ng-model="selectedDepartment"
-                ng-options="department for department in departments">
-        </select>
+        <label>Email</label><br>
 
-        <p>Select Department: {{selectedDepartment}}</p>
+        <input type="email"
+               name="email"
+               ng-model="student.email"
+               required>
 
+        <span class="error"
+              ng-show="studentForm.email.$touched && studentForm.email.$invalid">
+            Valid Email Required
+        </span>
 
-        <hr>
+        <br><br>
 
-<h2>Department Information</h2>
+        <label>Roll Number</label><br>
 
-<div ng-switch="selectedDepartment">
+        <input type="text"
+               name="roll"
+               ng-model="student.rollNo"
+               required>
 
-    <div ng-switch-when="CSE">
-        <h3>Computer Science Engineering</h3>
-        <p>Programming, AI, Data Science and Software Development.</p>
-    </div>
+        <span class="error"
+              ng-show="studentForm.roll.$touched && studentForm.roll.$invalid">
+            Roll Number Required
+        </span>
 
-    <div ng-switch-when="MBA">
-        <h3>MBA</h3>
-        <p>Business Administration and Management.</p>
-    </div>
+        <br><br>
 
-    <div ng-switch-when="MCA">
-        <h3>MCA</h3>
-        <p>Computer Applications and Software Development.</p>
-    </div>
+        <button type="button"
+                ng-click="registerStudent()"
+                ng-disabled="studentForm.$invalid">
+            Register Student
+        </button>
 
-    <div ng-switch-when="EEE">
-        <h3>EEE</h3>
-        <p>Electrical and Electronic Engineering topics.</p>
-    </div>
+    </form>
 
-    <div ng-switch-when="BCA">
-        <h3>BCA</h3>
-        <p>Computer Applications and Programming.</p>
-    </div>
+    <hr>
 
-    <div ng-switch-when="IMCA">
-        <h3>IMCA</h3>
-        <p>Integrated MCA topics.</p>
-    </div>
+    <h2>Registered Students</h2>
 
-    <div ng-switch-default>
-        <h3>Please Select a Department</h3>
-    </div>
-    <h2 class="">ng-init demo</h2>
-    <div ng-init="collegecode='fisat123';location='angamaly'">
+    <table ng-show="registeredStudents.length">
 
-        <p>
-            college code:{{collegecode}}
-        </p>
-        <p class="">Location:{{location}}</p>
-    </div>
-<button ng-click="allowAdmission()"></button>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Roll No</th>
+        </tr>
 
-</div>
+        <tr ng-repeat="s in registeredStudents">
+            <td>{{s.name}}</td>
+            <td>{{s.email}}</td>
+            <td>{{s.rollNo}}</td>
+        </tr>
+
+    </table>
+    <p>
+        pristine: {{studentForm.$pristine}}
+    </p>
+<p>
+    dirty:{{studentForm.$dirty}}
+</p>
+<p ng-show="studentForm.studentForm.$touched && studentForm.studentForm.$invalid"
+    style="color:red">
+    
+    Student Name is Required
+
+</p>
 </body>
 
 </html>
